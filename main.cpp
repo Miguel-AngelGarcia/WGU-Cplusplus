@@ -27,32 +27,31 @@ int main() {
  
     cout << "Printing Roster: " << endl;
     roster.printAll();
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;
 
     roster.printInvalidEmails();
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;
   
     cout << "Displaying average days left in the course: " << endl;
-    for (int i = 0; i < numStudents; i++) {
-        roster.printAverageDaysInCourse();
-    }
-    cout << "--Done--" << endl;
+    roster.printAverageDaysInCourse();
+    cout << "--Done--" << endl << endl;;
 
     roster.printByDegreeProgram(DegreeProgram::SOFTWARE);
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;
   
     cout << "Remove student A3: " << endl;
     roster.removeStudent("A3");
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;
 
     cout << "Printing Roster: " << endl;
     roster.printAll();
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;
 
     cout << "Remove student A3: " << endl;
     roster.removeStudent("A3");
-    cout << "--Done--" << endl;
+    cout << "--Done--" << endl << endl;;
 
     system("pause");
     return 0;
+    
 }

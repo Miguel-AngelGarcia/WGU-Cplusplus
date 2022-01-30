@@ -9,7 +9,7 @@ class Roster
 private:
     int lastIndex = -1; //when we add the first student we want the index to start at 0
     const static int numStudents = 5;
-    Student* studentRosterArray[numStudents]; //array of pointers to hold data
+    Student* classRosterArray[numStudents]; //array of pointers to hold data
 
 public:  
     /*

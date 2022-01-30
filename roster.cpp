@@ -93,8 +93,8 @@ void Roster::parse(string row)
      */
     lhs = rhs + 1; 
     DegreeProgram degProgram = SECURITY; //making this the default value
-    if (row.at(2) == 'T') degProgram = NETWORK;
-    else if (row.at(2) == 'F') degProgram = SOFTWARE;
+    if (row.at(lhs+2) == 'T') degProgram = NETWORK;
+    else if (row.at(lhs+2) == 'F') degProgram = SOFTWARE;
 
      /*if (row[lhs] == 'S')
          {
@@ -118,27 +118,6 @@ void Roster::parse(string row)
 }
 
 
-
-/*
-void Roster::parse(string row)
-{
-    //read degree program
-     /*determine what index has unique indentifiers
-        at 0, 'SECURITY' and 'SOFTWARE' both have 'S'
-        at index 1, 'E' in 'SECURITY,' the 'E' in 'NETWORK' are the same
-        at index 2, all three programs have unique letters.
-     
-    DegreeProgram degreeprogram = SECURITY; //making this the default value
-    if (row.at(2) == 'T') degreeprogram = NETWORK;
-    else if (row.at(2) == 'F') degreeprogram = SOFTWARE;
-
-    int rhs = row.find(',') // find comma, assign index to cariable 'rhs'
-    string 
-}
-*/ 
-
-
-
 void Roster::add(string studentID, string firstName, string lastName, string emailAddress, int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, DegreeProgram degreeprogam)
 {
     int arrDaysToComplete[Student::tableSize];
@@ -147,28 +126,29 @@ void Roster::add(string studentID, string firstName, string lastName, string ema
     arrDaysToComplete[1] = daysInCourse2;
     arrDaysToComplete[2] = daysInCourse3;
 
-    studentRosterArray[++lastIndex] = new Student(studentID, firstName, lastName, emailAddress, age, arrDaysToComplete, degreeprogam);
+    classRosterArray[++lastIndex] = new Student(studentID, firstName, lastName, emailAddress, age, arrDaysToComplete, degreeprogam);
 }
 
 Student* Roster::getStudent(int index)
 {
-    return studentRosterArray[index];
+    return classRosterArray[index];
 }
 
 void Roster::printAll()
 {
     for (int i = 0; i <= Roster::lastIndex; i++)
     {
-        cout << studentRosterArray[i]-> getStudentID() << '\t';
-        cout << studentRosterArray[i]-> getFirstName() << '\t';
-        cout << studentRosterArray[i]-> getLastName() << '\t';
-        cout << studentRosterArray[i]-> getAge() << '\t';
-        cout << studentRosterArray[i]-> getDaysToComplete()[0] << '\t'; //want to pull out number at index
-        cout << studentRosterArray[i]-> getDaysToComplete()[1] << '\t';
-        cout << studentRosterArray[i]-> getDaysToComplete()[2] << '\t';
-        cout << degreeProgramStrings[studentRosterArray[i]-> getDegreeProgram()] << '\t';
+        cout << classRosterArray[i]-> getStudentID() << '\t';
+        cout << classRosterArray[i]-> getFirstName() << '\t';
+        cout << classRosterArray[i]-> getLastName() << '\t';
+        cout << classRosterArray[i]-> getAge() << '\t';
+        cout << classRosterArray[i]-> getDaysToComplete()[0] << '\t'; //want to pull out number at index
+        cout << classRosterArray[i]-> getDaysToComplete()[1] << '\t';
+        cout << classRosterArray[i]-> getDaysToComplete()[2] << '\t';
+        cout << degreeProgramStrings[classRosterArray[i]-> getDegreeProgram()] << endl;
         //we want a string in the output, not a number
     }
+    cout << endl;
 }
 
 bool Roster::removeStudent(string studentID)
@@ -176,13 +156,13 @@ bool Roster::removeStudent(string studentID)
     bool found = false;
     for (int i = 0; i <= lastIndex; i++)
     {
-        if (studentRosterArray[i]->getStudentID() == studentID)
+        if (classRosterArray[i]->getStudentID() == studentID)
         {
             found = true;
             if (i < numStudents - 1)
-            {   Student* temp = studentRosterArray[i];
-                delete this->studentRosterArray[i];
-                studentRosterArray[i] = studentRosterArray[lastIndex];
+            {   Student* temp = classRosterArray[i];
+                delete this->classRosterArray[i];
+                classRosterArray[i] = classRosterArray[lastIndex];
                 lastIndex--;
                 cout << "Student with ID " << studentID << " was deleted." << endl;
                 this-> printAll();
@@ -204,7 +184,7 @@ void Roster::printByDegreeProgram(DegreeProgram degreeprogram)
     cout << "Printing by degree " << degreeProgramStrings[degreeprogram] << endl;
 
     for (int i = 0; i <= Roster::lastIndex; i++) {
-        if (Roster::studentRosterArray[i]->getDegreeProgram() == degreeprogram) studentRosterArray[i]->print();
+        if (Roster::classRosterArray[i]->getDegreeProgram() == degreeprogram) classRosterArray[i]->print();
     }
     
     cout << endl;
@@ -214,14 +194,14 @@ void Roster::printByDegreeProgram(DegreeProgram degreeprogram)
 void Roster::printAverageDaysInCourse()
 {
     for (int i = 0; i <= Roster::lastIndex; i++) {
-        cout << studentRosterArray[i]-> getStudentID() << ":";
-        cout << (studentRosterArray[i]-> getDaysToComplete()[0]
-            + studentRosterArray[i]-> getDaysToComplete()[1]
-            + studentRosterArray[i]-> getDaysToComplete()[2]) / 3.0 << endl;
+        cout << classRosterArray[i]-> getStudentID() << ":";
+        cout << (classRosterArray[i]-> getDaysToComplete()[0]
+            + classRosterArray[i]-> getDaysToComplete()[1]
+            + classRosterArray[i]-> getDaysToComplete()[2]) / 3.0 << endl;
         //dividing by 3.0 turns the results into a double. very important for output!
     }
 
-    cout << endl;
+
 }
 
 //Note: A valid email should include an at sign ('@') and period ('.') and should not include 
@@ -231,13 +211,12 @@ void Roster::printInvalidEmails()
     //bool invalid = false;
     cout << "Displaying invalid email entries:\n";
     for (int i = 0; i < Roster::lastIndex; i++){
-        string emAddress = (studentRosterArray[i]->getEmailAddress());
+        string emAddress = (classRosterArray[i]->getEmailAddress());
 
-        if ((emAddress.find("@") == string::npos) && (emAddress.find(".") == string::npos) && (emAddress.find(" ") != string::npos))
-        {   
-            cout << emAddress << endl;
-        }
-    }
+        if ((emAddress.find("@") == string::npos || emAddress.find(".") == string::npos) || (emAddress.find(" ") != string::npos))
+                   cout << emAddress << endl;
+           }
+
 }
 
 
@@ -245,9 +224,12 @@ Roster::~Roster()
 {
     for (int i = 0; i < numStudents; i++)
     {
-        delete studentRosterArray[i];
-        studentRosterArray[i] = nullptr;
+        i++;
+        delete classRosterArray[i];
+        classRosterArray[i] = nullptr;
     }
+    
+    //delete thi
 
      
 }
